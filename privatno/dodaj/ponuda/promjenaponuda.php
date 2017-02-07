@@ -234,7 +234,7 @@ if(isset($_POST["promjeni"])){
 		$("#trajeod").datepicker("option", $.datepicker.regional['hr']);
 		$("#trajeod").val(trajeod);
 		
-		  	 var trajedo = document.getElementById('trajedo').value;
+		 var trajedo = document.getElementById('trajedo').value;
 				
 		$("#trajedo").datepicker();
 		$("#trajedo").datepicker("option", $.datepicker.regional['hr']);

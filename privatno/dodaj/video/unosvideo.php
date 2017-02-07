@@ -23,7 +23,6 @@ if(isset($_POST["dodaj"])){
 		$izraz=$veza->prepare("insert into video 
 		(videoid,naziv,pregleda,likes,dislikes,datum) values 
 		(:videoid,:naziv,:pregleda,:likes,:dislikes,:datum)");
-		$izraz->bindParam("sifra",$_POST["sifra"]);
 		$izraz->bindParam("videoid",$_POST["videoid"]);
 		$izraz->bindParam("naziv",$_POST["naziv"]);
 		$izraz->bindParam("pregleda",$_POST["pregleda"]);

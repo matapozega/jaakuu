@@ -1,8 +1,22 @@
 <tr>
 	<td><?php echo $red->videoid; ?></td>
 	<td><?php echo $red->naziv; ?></td>
-	<td><?php echo $red->trajeod; ?></td>
-	<td><?php echo $red->trajedo; ?></td>
+	<td><?php 			
+				$d = strtotime($red->trajeod);
+				if($d!=""){
+			echo date($formatDatumaPHP, $d ); 
+			}else{
+				echo "&nbsp;";
+			}
+			?></td>
+	<td><?php 			
+				$d = strtotime($red->trajedo);
+				if($d!=""){
+			echo date($formatDatumaPHP, $d ); 
+			}else{
+				echo "&nbsp;";
+			}
+			?></td>
 	<td><?php echo $red->vise; ?></td>
 	<td><?php echo $red->manje; ?></td>
 	<td style="width: 150px;"><a style="margin-bottom: 0px;" title="Uredi" class="button expanded" href="promjenaponuda.php?sifra=<?php echo $red -> sifra; ?>"><i class="fi-page-edit"></i> </a></td>
