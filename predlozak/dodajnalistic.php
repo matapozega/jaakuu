@@ -36,3 +36,4 @@ else{
 	$izraz->execute(array("sifra"=>$status->sifra,"id"=>$_POST["id"],"koef"=>$_POST["koef"]));
 	echo "OK";
 }
+

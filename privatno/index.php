@@ -3,6 +3,13 @@ include_once '../konfig.php';
 if (!isset($_SESSION[$sid . "autoriziran"])) {
 	header("location: ../logout.php");
 }
+
+
+if (isset($_POST["dodaj"])) {
+	unset($_POST["dodaj"]);
+}
+
+
 $uvjet="";
 		if(isset($_GET["uvjet"])){
 			$uvjet="%" . $_GET["uvjet"] . "%";
@@ -106,7 +113,7 @@ $uvjet="";
 		<?php 	
 		
 		
-				$izraz=$veza->prepare("select  d.naziv as ime,e.naziv as tip from
+				$izraz=$veza->prepare("select d.naziv as ime,e.naziv as tip,c.sifra as ponuda from
 				listic a inner join	listic_ponuda b on a.sifra=b.listic
 				inner join ponuda c on b.ponuda=c.sifra
 				inner join video d on c.video=d.sifra
@@ -119,13 +126,33 @@ $uvjet="";
 				foreach ($niz as $stavka):					
 				?>
 				
-				<li><?php echo $stavka->ime ?> | <?php echo $stavka->tip ?></li>
+				<li><?php echo $stavka->ime ?> | <?php echo $stavka->tip ?> | <a href="#" ><span class="obrisi fi-x-circle" id="p_<?php echo $stavka->ponuda; ?>"></span></a></li>
 				<?php
 				endforeach;
 	 			?>
 					</ol>
-					
+					<form method="post" action="<?php $_SERVER["PHP_SELF"]  ?> accept-charset="utf-8"">
+						<div class="row">
+						<div class="large-7 columns">
+							 Uk. koeficijent:
+					 	</div>
+						<div class="large-5 columns">
+							 852
+					 	</div>
 					</div>
+					<div class="row">
+						<div class="large-6 columns">
+							 <h3>Uplata:</h3>
+					 	</div>
+						<div class="large-6 columns">
+							 <input type="number" />
+					 	</div>
+					</div>
+					<div class="row expanded">
+						 <input type="button" name="uplati" class="button expanded" value="Uplati"/>
+					</div>
+					</form>
+				</div>
 			</div>
 				
 			
@@ -169,7 +196,7 @@ $uvjet="";
 				data: "id=" + id + "&koef=" + koef,
 				success: function(vratioServer){
 					if(vratioServer==="OK"){
-						$("#ponude").append("<li>" + $("#t_" + vid).html() + " | " + $("#n_" + tip).html() + "</li>");
+						$("#ponude").append("<li>" + $("#t_" + vid).html() + " | " + $("#n_" + tip).html() + " | " + "<a href=\"#\" ><span class=\"obrisi fi-x-circle\" id=\"p_" + id + "\"></span></a></li>");
 					}else{
 						alert(vratioServer);
 					}
@@ -183,6 +210,8 @@ $uvjet="";
 			$(".k2").click(function(){
 				var id=$(this).attr("id").split("_")[1];
 				var koef=$(this).attr("id").split("_")[2];
+				var vid=$(this).attr("id").split("_")[3];
+				var tip=$(this).attr("id").split("_")[4];
 				//ajax na php šalješ id i koef
 				$.ajax({
 				type: "POST",
@@ -190,11 +219,8 @@ $uvjet="";
 				data: "id=" + id + "&koef=" + koef,
 				success: function(vratioServer){
 					if(vratioServer=="OK"){
-						$("#ponude").append("<li>" + polaznik.ime 
-						+ " " + polaznik.prezime + "</td><td>" 
-						+ "<a href=\"#\" class=\"polaznik\" id=\"p_" + polaznik.sifra + "\">Obriši</a></td></tr>");
+						$("#ponude").append("<li>" + $("#t_" + vid).html() + " | " + $("#n_" + tip).html() + " | " + "<a href=\"#\" ><span class=\"obrisi fi-x-circle\" id=\"p_" + id + "\"></span></a></li>");
 						definirajBrisanje();
-						$("#uvjet").focus();
 					}else{
 						alert(vratioServer);
 					}
@@ -202,8 +228,34 @@ $uvjet="";
 					
 				});	
 				//kada se vrati response od ajax
-				$("#ponude").append("<li>bbbb</li>");
 			});
+			
+			
+				function definirajBrisanje(){
+		$(".obrisi").click(function(){
+				var ponuda=$(this).attr("id").split("_")[1];
+				var element = $(this);
+				$.ajax({
+				type: "POST",
+				url: "../predlozak/obrisisalistica.php",
+				data: "id=" + ponuda,
+				success: function(vratioServer){
+					if(vratioServer=="OK"){
+						element.parent().parent().remove();
+					}else{
+						alert(vratioServer);
+					}
+					}
+					
+				});
+				
+				
+				return false;
+			});
+		
+		}
+		
+		definirajBrisanje();
 		</script>
 	</body>
 </html>
