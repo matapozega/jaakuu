@@ -1,6 +1,6 @@
-drop database if exists jaakuu;
-create database jaakuu character set utf8 collate utf8_general_ci;
-use jaakuu;
+#drop database if exists jaakuu;
+#create database jaakuu character set utf8 collate utf8_general_ci;
+#use jaakuu;
 
 ALTER DATABASE CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 

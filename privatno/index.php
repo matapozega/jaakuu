@@ -196,7 +196,8 @@ $uvjet="";
 				data: "id=" + id + "&koef=" + koef,
 				success: function(vratioServer){
 					if(vratioServer==="OK"){
-						$("#ponude").append("<li>" + $("#t_" + vid).html() + " | " + $("#n_" + tip).html() + " | " + "<a href=\"#\" ><span class=\"obrisi fi-x-circle\" id=\"p_" + id + "\"></span></a></li>");
+						$("#ponude").append("<li>" + $("#t_" + vid).html() + " | " + $("#n_" + tip).html() + " | " + koef + "<a href=\"#\" ><span class=\"obrisi fi-x-circle\" id=\"p_" + id + "\"></span></a></li>");
+						definirajBrisanje();
 					}else{
 						alert(vratioServer);
 					}
@@ -218,7 +219,7 @@ $uvjet="";
 				url: "../predlozak/dodajnalistic.php",
 				data: "id=" + id + "&koef=" + koef,
 				success: function(vratioServer){
-					if(vratioServer=="OK"){
+					if(vratioServer==="OK"){
 						$("#ponude").append("<li>" + $("#t_" + vid).html() + " | " + $("#n_" + tip).html() + " | " + "<a href=\"#\" ><span class=\"obrisi fi-x-circle\" id=\"p_" + id + "\"></span></a></li>");
 						definirajBrisanje();
 					}else{
