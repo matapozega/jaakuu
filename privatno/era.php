@@ -15,9 +15,9 @@ if (!isset($_SESSION[$sid . "autoriziran"])) {
 		<?php
 		include_once '../predlozak/topbar.php';
 		?>
-		
-			<img src="<?php echo $putanjaAPP; ?>img/jaakuu.png"  />
-		
+		<div class="row expanded">
+			<img style="display: block; margin-left: auto; margin-right: auto;" src="<?php echo $putanjaAPP; ?>img/jaakuu.png"  />
+		</div>
 		<?php
 		include_once '../predlozak/footer.php';
 		?>	

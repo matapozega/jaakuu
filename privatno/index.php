@@ -18,11 +18,10 @@ $uvjet="";
 		}
 		
 
-	$poStranici=6;
+	$poStranici=3;
 	
 	$izraz = $veza -> prepare("
-		select count(a.sifra) from ponuda a inner join video b on a.video=b.sifra inner join tipponude c on a.tipponude=c.sifra
-		where concat(a.trajeod,a.trajedo,b.naziv,c.naziv) like :uvjet;");
+		select count(sifra) from video where naziv like :uvjet;");
 	$izraz -> execute(array("uvjet"=>$uvjet));
 	$ukupno = $izraz->fetchColumn();
 	
@@ -89,19 +88,14 @@ $uvjet="";
 		<?php 	
 		
 		
-				$izraz=$veza->prepare("select b.sifra, a.videoid, a.sifra as vid, a.naziv as ime, a.pregleda, a.likes, a.dislikes, a.datum,
-										b.trajeod, b.trajedo, b.vise, b.manje,
-										c.sifra as tip,c.naziv, c.opis
-										from video a inner join ponuda b on a.sifra=b.video
-										inner join tipponude c on c.sifra=b.tipponude
-										where concat(a.videoid,a.naziv,b.trajeod,b.trajedo,c.naziv)
-										 like :uvjet order by c.naziv desc limit :odKuda,:poStranici
+				$izraz=$veza->prepare("select * from video 	where concat(videoid,naziv)
+										 like :uvjet order by naziv asc limit :odKuda,:poStranici
 							");
 							$izraz->execute(array("uvjet"=>$uvjet, "odKuda"=>$odKuda,"poStranici"=>$poStranici));
 							$niz=$izraz->fetchALL(PDO::FETCH_OBJ);
 							
 				foreach ($niz as $stavka) {					
-				include '../predlozak/ponudalista.php';
+				include '../predlozak/ponudalistavidea.php';
 			};
 		 ?>
 		 		

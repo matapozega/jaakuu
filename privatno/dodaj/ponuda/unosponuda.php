@@ -26,8 +26,9 @@ if(isset($_POST["dodaj"])){
 		//radi insert
 		unset($_POST["dodaj"]);
 		$izraz = $veza -> prepare("insert into ponuda 
-		(video,tipponude,trajeod,trajedo,vise,manje) values 
-		(:video,:tipponude,:trajeod,:trajedo,:vise,:manje)");
+		(video,tipponude,trajeod,trajedo,koeficijent,
+		naziv) values 
+		(:video,:tipponude,:trajeod,:trajedo,:koeficijent,:naziv)");
 		$izraz->bindParam("video",$_POST["video"]);
 		$izraz->bindParam("tipponude",$_POST["tipponude"]);
 		
@@ -43,8 +44,8 @@ if(isset($_POST["dodaj"])){
 			$izraz->bindParam("trajedo",$d1->format("Y-m-d"));
 		}
 		
-		$izraz->bindParam("vise",$_POST["vise"]);
-		$izraz->bindParam("manje",$_POST["manje"]);
+		$izraz->bindParam("naziv",$_POST["naziv"]);
+		$izraz->bindParam("koeficijent",$_POST["koeficijent"]);
 		
 		$izraz->execute();
 
@@ -111,8 +112,8 @@ if(isset($_POST["dodaj"])){
 
 							inputPolje("text", "trajeod", "Ponuda traje od:", $poruke);
 							inputPolje("text", "trajedo", "Ponuda traje do:", $poruke);
-							inputPolje("text", "vise", "Prvi koeficijent", $poruke);
-							inputPolje("text", "manje", "Drugi koeficijent", $poruke);
+							inputPolje("text", "naziv", "Vrijednost", $poruke);
+							inputPolje("text", "koeficijent", "Koeficijent", $poruke);
 					?>
 				</fieldset>
 

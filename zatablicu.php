@@ -1,14 +1,15 @@
 <?php
 
-$videoid = array('cHHLHGNpCSA', 'E2PglxuFtUg', 'IcrbM1l_BoI', 'IXdNnw99-Ic', 'K6S4O-VtZBI', '-Du-CWASm20', 'KCy7lLQwToI', 'b4Bj7Zb-YD4', 'PT2_F-1esPk', 'AeGfss2vsZg', 'RgKAFK5djSk', 'vjW8wmF5VWc', 'j7leQB_Oe_k', 'O4irXQhgMqg');
+$videoid = array('cHHLHGNpCSA', 'E2PglxuFtUg', 'IcrbM1l_BoI', 'IXdNnw99-Ic', 'K6S4O-VtZBI', '-Du-CWASm20', 'KCy7lLQwToI', 'b4Bj7Zb-YD4', 'PT2_F-1esPk', 'AeGfss2vsZg', 'RgKAFK5djSk', 'vjW8wmF5VWc', 'j7leQB_Oe_k', 'O4irXQhgMqg', 'P9JoZwkliSI', 'EAeZPiZbpvw', 'Jw1R40lRlI4', 'pzVhub-FziQ', '0IofpvkGJPM', 'DVoBVEDiCIQ', 'Z6YjGldSD8A', 'YKsksDrZs8s');
 // usipavanje u video tablicu
 echo "insert into video (videoid,pregleda,likes,dislikes,datum) values <br />";
-for ($i = 4; $i < 51; $i++) {
-	$videoide = array_rand($videoid);
-	if ($i < 50) {
-		echo "('" . $videoid[$videoide] . "', " . mt_rand(1000000, 10000000000) . ", " . mt_rand(1, 1000000) . ", " . mt_rand(1, 100000) . ", '" . date('Y-m-d', strtotime('+' . mt_rand(-5000, 0) . ' days')) . " " . date('H', strtotime('+' . mt_rand(0, 24) . ' hours')) . ":" . rand(1, 59) . ":" . rand(1, 59) . "'),<br />";
+$length = count($videoid);
+for ($i = 0; $i < $length; $i++) {
+	
+	if ($i < $length-1) {
+		echo "('" . $videoid[$i] . "', " . mt_rand(1000000, 10000000000) . ", " . mt_rand(1, 1000000) . ", " . mt_rand(1, 100000) . ", '" . date('Y-m-d', strtotime('+' . mt_rand(-5000, 0) . ' days')) . " " . date('H', strtotime('+' . mt_rand(0, 24) . ' hours')) . ":" . rand(1, 59) . ":" . rand(1, 59) . "'),<br />";
 	} else {
-		echo "('" . $videoid[$videoide] . "', " . mt_rand(1000000, 10000000000) . ", " . mt_rand(1, 1000000) . ", " . mt_rand(1, 100000) . ", '" . date('Y-m-d', strtotime('+' . mt_rand(-5000, 0) . ' days')) . " " . date('H', strtotime('+' . mt_rand(0, 24) . ' hours')) . ":" . rand(1, 59) . ":" . rand(1, 59) . "');<br />";
+		echo "('" . $videoid[$i] . "', " . mt_rand(1000000, 10000000000) . ", " . mt_rand(1, 1000000) . ", " . mt_rand(1, 100000) . ", '" . date('Y-m-d', strtotime('+' . mt_rand(-5000, 0) . ' days')) . " " . date('H', strtotime('+' . mt_rand(0, 24) . ' hours')) . ":" . rand(1, 59) . ":" . rand(1, 59) . "');<br />";
 	}
 }
 
@@ -16,7 +17,7 @@ for ($i = 4; $i < 51; $i++) {
 
 // usipavanje u tipponude tablicu
 echo "insert into tipponude (naziv,opis) values <br />";
-for ($i = 4; $i < 16; $i++) {
+for ($i = 1; $i < 16; $i++) {
 	if ($i < 15) {
 		echo "('tip ponude" . $i . "', 'ponuda tipa" . $i . "'  ),<br />";
 	} else {
@@ -26,14 +27,14 @@ for ($i = 4; $i < 16; $i++) {
 
 
 // usipavanje u ponuda tablicu
-echo "insert into ponuda (video,tipponude,trajeod,trajedo,vise, manje) values <br />";
-for ($i = 4; $i < 51; $i++) {
+echo "insert into ponuda (video,tipponude,trajeod,trajedo,koeficijent) values <br />";
+for ($i = 1; $i < 51; $i++) {
 	$od = "'" . date('Y-m-d', strtotime('+' . mt_rand(-30, 30) . ' days')) . " " . date('H', strtotime('+' . mt_rand(0, 24) . ' hours')) . ":" . rand(1, 59) . ":" . rand(1, 59) . "'";
 	$do = "'" . date('Y-m-d', strtotime('+' . mt_rand(-30, 30) . ' days')) . " " . date('H', strtotime('+' . mt_rand(0, 24) . ' hours')) . ":" . rand(1, 59) . ":" . rand(1, 59) . "'";
 	if ($i < 50) {
-		echo "(" . mt_rand(1, 51) . ", " . mt_rand(1, 15) . ", " . (($od < $do) ? $od : $do) . ", " . (($od < $do) ? $do : $od) . ", " . mt_rand(1 * 100, 10 * 100) / 100 . ", " . mt_rand(1 * 100, 10 * 100) / 100 . " ),<br />";
+		echo "(" . mt_rand(1, $length) . ", " . mt_rand(1, 15) . ", " . (($od < $do) ? $od : $do) . ", " . (($od < $do) ? $do : $od) . ", " . mt_rand(1 * 100, 10 * 100) / 100 . " ),<br />";
 	} else {
-		echo "(" . mt_rand(1, 51) . ", " . mt_rand(1, 15) . ", " . (($od < $do) ? $od : $do) . ", " . (($od < $do) ? $do : $od) . ", " . mt_rand(1 * 100, 10 * 100) / 100 . ", " . mt_rand(1 * 100, 10 * 100) / 100 . " );<br />";
+		echo "(" . mt_rand(1, $length) . ", " . mt_rand(1, 15) . ", " . (($od < $do) ? $od : $do) . ", " . (($od < $do) ? $do : $od) . ", " . mt_rand(1 * 100, 10 * 100) / 100 . " );<br />";
 	}
 }
 
@@ -48,7 +49,7 @@ $last_names = array('Abbott', 'Acevedo', 'Ayers', 'Bailey', 'Baird', 'Baker', 'B
 //lista mail adresa
 $mail = array('@gmail.com', '@yaahoo.com', '@example.com', '@mail.to', '@live.com', '@net.com', '@hotmail.com');
 echo "insert into korisnik (email,lozinka,ime,prezime,oib,datrodenja,aktivan,postanskibr,drzava,mjesto,ulica) values <br />";
-for ($i = 5; $i < 51; $i++) {
+for ($i = 1; $i < 51; $i++) {
 	$ime = array_rand($names);
 	$prez = array_rand($last_names);
 	$nast = array_rand($mail);
@@ -68,11 +69,11 @@ for ($i = 5; $i < 51; $i++) {
 
 // usipavanje u novcanik tablicu
 echo "insert into novcanik (korisnik,stanje,valuta) values <br />";
-for ($i = 5; $i < 71; $i++) {
-	if ($i < 70){
-	echo "(" . mt_rand(1, 50) . ", " . mt_rand(0 * 100, 1000 * 100) / 100 . ", 'Jaakuu'),<br />";
+for ($i = 1; $i < 51; $i++) {
+	if ($i < 50){
+	echo "(" . $i . ", " . mt_rand(0 * 100, 1000 * 100) / 100 . ", 'Jaakuu'),<br />";
 }else {
-	echo "(" . mt_rand(1, 50) . ", " . mt_rand(0 * 100, 1000 * 100) / 100 . ", 'Jaakuu');<br />";
+	echo "(" . $i . ", " . mt_rand(0 * 100, 1000 * 100) / 100 . ", 'Jaakuu');<br />";
 	}
 }
 
@@ -80,18 +81,18 @@ for ($i = 5; $i < 71; $i++) {
 
 // usipavanje u listic tablicu
 echo "insert into listic (status,korisnik,uplata,ukupnikoeficijent) values <br />";
-for ($i = 4; $i < 501; $i++) {
+for ($i = 1; $i < 501; $i++) {
 	if ($i < 500){
-	echo "(" . mt_rand(0, 1) . ", " . mt_rand(1, 50) . ", " . mt_rand(0 * 100, 100 * 100) / 100 . ", " . mt_rand(0 * 100, 1000 * 100) / 100 . "),<br />";
+	echo "(" . 1 . ", " . mt_rand(1, 50) . ", " . mt_rand(0 * 100, 100 * 100) / 100 . ", " . mt_rand(0 * 100, 1000 * 100) / 100 . "),<br />";
 }else {
-	echo "(" . mt_rand(0, 1) . ", " . mt_rand(1, 50) . ", " . mt_rand(0 * 100, 100 * 100) / 100 . ", " . mt_rand(0 * 100, 1000 * 100) / 100 . ");<br />";
+	echo "(" . 1 . ", " . mt_rand(1, 50) . ", " . mt_rand(0 * 100, 100 * 100) / 100 . ", " . mt_rand(0 * 100, 1000 * 100) / 100 . ");<br />";
 	}
 }
 
 
 // usipavanje u listic_ponuda tablicu
 echo "insert into listic_ponuda (listic,ponuda) values <br />";
-for ($i = 5; $i < 2001; $i++) {
+for ($i = 1; $i < 2001; $i++) {
 	if ($i < 2000){
 	echo "(" . mt_rand(1, 500) . ", " . mt_rand(1, 50) . "),<br />";
 }else {

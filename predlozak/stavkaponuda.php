@@ -17,8 +17,8 @@
 				echo "&nbsp;";
 			}
 			?></td>
-	<td><?php echo $red->vise; ?></td>
-	<td><?php echo $red->manje; ?></td>
+	<td><?php echo $red->vrijednost; ?></td>
+	<td><?php echo $red->koeficijent; ?></td>
 	<td style="width: 150px;"><a style="margin-bottom: 0px;" title="Uredi" class="button expanded" href="promjenaponuda.php?sifra=<?php echo $red -> sifra; ?>"><i class="fi-page-edit"></i> </a></td>
 	<td style="width: 150px;"><a style="margin-bottom: 0px;" class="alert button expanded" title="Obriši" href="obrisiponuda.php?sifra=<?php echo $red -> sifra ?>"><i class="fi-trash"></i> </td>
 </tr>

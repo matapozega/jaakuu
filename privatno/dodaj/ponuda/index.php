@@ -17,7 +17,7 @@ $uvjet = "";
 			$izraz = $veza -> prepare("
 				select count(a.sifra) from video a inner join ponuda b on a.sifra=b.video
 				inner join tipponude c on c.sifra=b.tipponude
-				where concat(a.videoid,b.trajeod, b.trajedo, b.vise, b.manje, c.naziv) like :uvjet
+				where concat(a.videoid,b.trajeod, b.trajedo, b.koeficijent, c.naziv) like :uvjet
 			");
 			$izraz -> execute(array("uvjet" => $uvjet));
 			$ukupno = $izraz->fetchColumn();
@@ -65,8 +65,8 @@ $uvjet = "";
 					<td>Tip ponude</td>
 					<td>Ponuda traje od:</td>
 					<td>Ponuda traje do:</td>
-					<td>Koeficijent 1</td>
-					<td>koeficijent 2</td>
+					<td>Vrijednost</td>
+					<td>Koeficijent</td>
 					<td colspan="2">
 						<div class="row columns expanded">
 							<form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="GET">
@@ -80,10 +80,10 @@ $uvjet = "";
 				<?php 
 				
 				$izraz = $veza->prepare("
-				select a.videoid,b.sifra, b.trajeod, b.trajedo, b.vise, b.manje, c.naziv
+				select a.videoid, b.naziv as vrijednost, b.sifra, b.trajeod, b.trajedo, b.koeficijent, c.naziv
 				from video a inner join ponuda b on a.sifra=b.video
 				inner join tipponude c on c.sifra=b.tipponude
-				where concat(a.videoid,b.trajeod, b.trajedo, b.vise, b.manje, c.naziv) like :uvjet limit :odKuda,:poStranici
+				where concat(a.videoid,b.trajeod, b.trajedo, b.koeficijent, c.naziv) like :uvjet limit :odKuda,:poStranici
 				");
 				$izraz->execute(array("uvjet" => $uvjet, "odKuda"=>$odKuda,"poStranici"=>$poStranici));
 				$niz = $izraz->fetchALL(PDO::FETCH_OBJ);

@@ -7,18 +7,18 @@
 						<?php echo $stavka -> ime; ?></a></h4>
 					<div class="row">
 						<div  class="large-6 columns">
-						  Više
+						  <?php echo $stavka -> vm; ?>
 						</div>
 						<div class="large-6 columns">
-						  Manje
+						  <?php echo $stavka -> vm; ?>
 						</div>
 					</div>
 					<div class="row">
 						<div class="large-6 columns">
-						  <a class="button k1" id="p1_<?php echo $stavka->sifra ?>_<?php echo $stavka -> vise; ?>_<?php echo $stavka->vid ?>_<?php echo $stavka->tip; ?>"><?php echo $stavka -> vise; ?></a> 
+						  <a class="button k1" id="p1_<?php echo $stavka->sifra ?>_<?php echo $stavka -> vm; ?>_<?php echo $stavka->vid ?>_<?php echo $stavka->tip; ?>"><?php echo $stavka -> koeficijent; ?></a> 
 						</div>
 						<div class="large-6 columns">
-						  <a class="button success k2" id="p2_<?php echo $stavka->sifra ?>_<?php echo $stavka -> manje; ?>_<?php echo $stavka->vid ?>_<?php echo $stavka->tip; ?>"><?php echo $stavka -> manje; ?></a>
+						  <a class="button success k2" id="p2_<?php echo $stavka->sifra ?>_<?php echo $stavka -> vm; ?>_<?php echo $stavka->vid ?>_<?php echo $stavka->tip; ?>"><?php echo $stavka -> koeficijent; ?></a>
 						</div>
 					</div>			
 					<div class="row">
