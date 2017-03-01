@@ -3,12 +3,24 @@ include_once '../konfig.php';
 if (!isset($_SESSION[$sid . "autoriziran"])) {
 	header("location: ../logout.php");
 }
+include_once '../predlozak/inputpolja.php';
 
-
-if (isset($_POST["dodaj"])) {
-	unset($_POST["dodaj"]);
-}
-
+if (isset($_POST["uplati"])){
+	
+		
+		
+		//radi update
+		unset($_POST["uplati"]);
+		$izraz=$veza->prepare("update listic set status=1, uplata=:uplata, ukupnikoeficijent=:ukupnikoef  where korisnik=:korisnik and sifra=:listic");
+		$izraz->bindParam("korisnik",$_SESSION[$sid . "autoriziran"]->sifra);
+		$izraz->bindParam("ukupnikoef",$_POST["ukupnikoef"]);
+		$izraz->bindParam("uplata",$_POST["uplata"]);
+		$izraz->bindParam("listic",$_POST["listic"]);
+		$izraz->execute();
+		header("location: index.php");
+		//print_r($_POST);
+		}
+	
 
 $uvjet="";
 		if(isset($_GET["uvjet"])){
@@ -24,7 +36,6 @@ $uvjet="";
 		select count(sifra) from video where naziv like :uvjet;");
 	$izraz -> execute(array("uvjet"=>$uvjet));
 	$ukupno = $izraz->fetchColumn();
-	
 	$ukupnoStranica=ceil($ukupno/$poStranici);
 	
 	if(isset($_GET["stranica"])){
@@ -101,13 +112,16 @@ $uvjet="";
 		 		
 					</div>
 				</div>
-				<div class="large-2 columns expanded"> Ticket 
+				
+				<div class="large-2 columns expanded">
+					<form method="post" action="<?php $_SERVER["PHP_SELF"];?>" accept-charset="utf-8"">
+					 Ticket 
 					<ol id="ponude">
 						
 		<?php 	
 		
 		
-				$izraz=$veza->prepare("select d.naziv as ime,e.naziv as tip,c.sifra as ponuda from
+				$izraz=$veza->prepare("select a.sifra as listic,c.naziv as vm, c.koeficijent as koef, d.naziv as ime,e.naziv as tip,c.sifra as ponuda from
 				listic a inner join	listic_ponuda b on a.sifra=b.listic
 				inner join ponuda c on b.ponuda=c.sifra
 				inner join video d on c.video=d.sifra
@@ -120,18 +134,19 @@ $uvjet="";
 				foreach ($niz as $stavka):					
 				?>
 				
-				<li><?php echo $stavka->ime ?> | <?php echo $stavka->tip ?> | <a href="#" ><span class="obrisi fi-x-circle" id="p_<?php echo $stavka->ponuda; ?>"></span></a></li>
+				<li><?php echo $stavka->ime; ?> | <?php echo $stavka-> vm; ?>  <?php echo $stavka->tip; ?> | <?php echo $stavka-> koef; ?> | <a href="#" ><span class="obrisi fi-x-circle" id="p_<?php echo $stavka->ponuda; ?>"></span></a></li>
 				<?php
 				endforeach;
 	 			?>
 					</ol>
-					<form method="post" action="<?php $_SERVER["PHP_SELF"]  ?> accept-charset="utf-8"">
+					<input type="hidden" name="listic" value="<?php echo $stavka->listic ?>" />
+					
 						<div class="row">
 						<div class="large-7 columns">
 							 Uk. koeficijent:
 					 	</div>
 						<div class="large-5 columns">
-							 852
+							 <?php inputPolje("number", "ukupnikoef","", $poruke); ?>
 					 	</div>
 					</div>
 					<div class="row">
@@ -139,11 +154,11 @@ $uvjet="";
 							 <h3>Uplata:</h3>
 					 	</div>
 						<div class="large-6 columns">
-							 <input type="number" />
+							 <?php inputPolje("number", "uplata","", $poruke); ?>
 					 	</div>
 					</div>
 					<div class="row expanded">
-						 <input type="button" name="uplati" class="button expanded" value="Uplati"/>
+						 <input type="submit" name="uplati"  class="button expanded" value="Uplati"/>
 					</div>
 					</form>
 				</div>
@@ -190,7 +205,7 @@ $uvjet="";
 				data: "id=" + id + "&koef=" + koef,
 				success: function(vratioServer){
 					if(vratioServer==="OK"){
-						$("#ponude").append("<li>" + $("#t_" + vid).html() + " | " + $("#n_" + tip).html() + " | " + koef + "<a href=\"#\" ><span class=\"obrisi fi-x-circle\" id=\"p_" + id + "\"></span></a></li>");
+						$("#ponude").append("<li>" + $("#t_" + vid).html() + " | " + $("#n_" + tip).html() + " | " + $("#st_" + id).text() + " | " + "<a href=\"#\" ><span class=\"obrisi fi-x-circle\" id=\"p_" + id + "\"></span></a></li>");
 						definirajBrisanje();
 					}else{
 						alert(vratioServer);
@@ -200,29 +215,6 @@ $uvjet="";
 				});
 				//kada se vrati response od ajax
 				
-			});
-			
-			$(".k2").click(function(){
-				var id=$(this).attr("id").split("_")[1];
-				var koef=$(this).attr("id").split("_")[2];
-				var vid=$(this).attr("id").split("_")[3];
-				var tip=$(this).attr("id").split("_")[4];
-				//ajax na php šalješ id i koef
-				$.ajax({
-				type: "POST",
-				url: "../predlozak/dodajnalistic.php",
-				data: "id=" + id + "&koef=" + koef,
-				success: function(vratioServer){
-					if(vratioServer==="OK"){
-						$("#ponude").append("<li>" + $("#t_" + vid).html() + " | " + $("#n_" + tip).html() + " | " + "<a href=\"#\" ><span class=\"obrisi fi-x-circle\" id=\"p_" + id + "\"></span></a></li>");
-						definirajBrisanje();
-					}else{
-						alert(vratioServer);
-					}
-					}
-					
-				});	
-				//kada se vrati response od ajax
 			});
 			
 			

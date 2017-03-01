@@ -1,7 +1,7 @@
 <div class="large-12 columns end">
 	<div style="text-align: center;" class="item-wrapper">
 		<iframe allowfullscreen="allowfullscreen" src="https://www.youtube.com/embed/<?php echo $stavka -> videoid; ?>"></iframe>
-		<h4 ><a href="https://www.youtube.com/watch?v=<?php echo $stavka -> videoid; ?>" id="t_<?php echo $stavka -> vid; ?>" target="_blank">
+		<h4 ><a href="https://www.youtube.com/watch?v=<?php echo $stavka -> videoid; ?>" id="t_<?php echo $stavka -> sifra; ?>" target="_blank">
 			<?php echo $stavka -> naziv; ?></a></h4>
 		<div class="row" style="min-height: 50px">
 			<div class="large-3 columns">
@@ -23,7 +23,7 @@
 				<td colspan="2">Koeficijent:</td>
 			</thead>
 			<?php
-			$izraz1 = $veza -> prepare("select a.koeficijent,a.naziv,b.naziv as tip from ponuda a inner join tipponude b on a.tipponude=b.sifra where video=:videoid");
+			$izraz1 = $veza -> prepare("select a.sifra,a.koeficijent,a.naziv,b.naziv as tip,b.sifra as sifratip from ponuda a inner join tipponude b on a.tipponude=b.sifra where video=:videoid");
 			$izraz1 -> execute(array("videoid" => $stavka -> sifra));
 			$niz = $izraz1 -> fetchAll(PDO::FETCH_OBJ);
 			foreach ($niz as $red) {

@@ -1,34 +1,20 @@
-						<fieldset>
-							<legend>Osobni podaci</legend>
-							<?php 
-							
-								inputPolje("text","ime", "Ime", $poruke);
-								inputPolje("text","prezime", "Prezime", $poruke);
-								inputPolje("number","oib", "Oib", $poruke);
-								inputPolje("date","datumrodenja", "Datum rođenja", $poruke);
-							
-							 ?>
-						</fieldset>
-						<fieldset>
-							<legend>Adresa stanovanja</legend>
-							<?php 
-							
-								inputPolje("text","ulica", "Ulica", $poruke);
-								inputPolje("text","mjesto", "Mjesto", $poruke);
-								inputPolje("text","drzava", "Država", $poruke);
-								inputPolje("number","postanskibr", "Poštanski broj", $poruke);
-							
-							 ?>
-						</fieldset>
-						<fieldset>
-							<legend>Login podaci</legend>
-							<?php 
-							
-								inputPolje("email","email", "E-mail", $poruke);
-								inputPolje("password","lozinka", "Lozinka", $poruke);
-								inputPolje("password","potvrid_lozinku", "Ponovi lozinku", $poruke);
-								inputPolje("date","datumrodenja", "Datum rođenja", $poruke);
-							
-							 ?>
-						</fieldset>
-						
+<?php
+
+include_once 'konfig.php';
+
+$izraz = $veza -> prepare("
+    select a.status,a.sifra,d.sifra as tip from listic a inner join listic_ponuda b on a.sifra=b.listic
+	inner join ponuda c on c.sifra=b.ponuda 
+	inner join tipponude d on d.sifra=c.tipponude where a.sifra=504;");
+	$izraz->execute();
+	$listic=$izraz->fetch(PDO::FETCH_OBJ);
+	
+	echo $listic->tip;
+	
+	
+	$izraz = $veza -> prepare("select count(a.ponuda) from listic_ponuda a inner join ponuda b on a.ponuda=b.sifra 
+	inner join tipponude c on c.sifra=b.tipponude where a.listic=:listic and (a.ponuda like :ponudaid or b.tipponude like :tipponude) ");
+	$izraz->execute(array("listic" => 504,"tipponude" => $listic->tip,"ponudaid"=>41));
+	$provjera=$izraz->fetchColumn();
+	
+	echo $provjera;

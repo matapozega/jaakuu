@@ -27,7 +27,7 @@
 					</div>
 					<div class="row">
 						<div class="large-6 columns">
-							<p>Pogledii: <?php echo $stavka->pregleda; ?></p>
+							<p>Pogledi: <?php echo $stavka->pregleda; ?></p>
 						</div>
 						<div class="large-6 columns">
 							<p>Like-ovi: <?php echo $stavka->likes; ?></p>

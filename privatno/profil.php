@@ -43,6 +43,27 @@ if(isset($_POST["obrisi"])){
 		
 		<pre><?php print_r($_SESSION) ?></pre>
 		
+		<table>
+			<thead>
+				<tr>
+					<td>Broj listića</td>
+					<td>Uplata</td>
+					<td>Ukupni koef</td>
+					<td>Parovi</td>
+				</tr>
+			</thead>
+			<tbody>
+		<?php  
+		$izraz=$veza->prepare("select * from listic where korisnik=:korisnik and status=1");
+							$izraz->execute(array("korisnik"=>$_SESSION[$sid . "autoriziran"]->sifra));
+							$niz=$izraz->fetchALL(PDO::FETCH_OBJ);
+							
+				foreach ($niz as $stavka): 	
+				include '../predlozak/odigranilistici.php';
+				endforeach;
+	 			?>
+	 		</tbody>	
+	 	</table>
 			<div class="row columns">
 				<form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
 					<input type="hidden" name="sifra" value="<?php echo $_GET["sifra"] ?>" />
