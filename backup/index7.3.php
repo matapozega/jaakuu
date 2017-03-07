@@ -113,9 +113,9 @@ $poruke=array();
 					</div>
 				</div>
 				
-				<div class="large-2 columns expanded callout" style="margin-top: 40px;">
+				<div class="large-2 columns expanded">
 					<form method="post" action="<?php $_SERVER["PHP_SELF"];?>" accept-charset="utf-8"">
-					 
+					 Ticket 
 					<ol id="ponude">
 						
 		<?php 	
@@ -146,15 +146,7 @@ $poruke=array();
 							 <h3>Uk. koeficijent:</h3>
 					 	</div>
 						<div class="large-5 columns">
-							<div id="uk"><?php echo number_format((float)$stavka->ukupnikoeficijent, 2, '.', '');  ?></div>
-					 	</div>
-					</div>
-					<div class="row">
-						<div class="large-6 columns">
-							 <h3>ev.dobitak:</h3>
-					 	</div>
-						<div class="large-6 columns">
-							 <?php inputPolje("number", "evdobitak","", $poruke); ?>
+							<div id="uk"><?php echo $stavka->ukupnikoeficijent; ?></div>
 					 	</div>
 					</div>
 					<div class="row">
@@ -163,6 +155,14 @@ $poruke=array();
 					 	</div>
 						<div class="large-6 columns">
 							 <?php inputPolje("number", "uplata","", $poruke); ?>
+					 	</div>
+					</div>
+					<div class="row">
+						<div class="large-6 columns">
+							 <h3>ev.dobitak:</h3>
+					 	</div>
+						<div class="large-6 columns">
+							 <?php inputPolje("number", "evdobitak","", $poruke); ?>
 					 	</div>
 					</div>
 					<div class="row expanded">
@@ -220,20 +220,6 @@ $poruke=array();
 					}
 					}
 					
-				}),
-				$.ajax({
-				type: "POST",
-				url: "../predlozak/updateukupnikoef.php",
-				data: "koef=" + koef,
-				success: function(vratioServer){
-					if(vratioServer!=0){
-						$("#uk").text( vratioServer );
-						definirajBrisanje();
-					}else{
-						alert(vratioServer);
-					}
-					}
-					
 				});
 				
 			});
@@ -248,8 +234,11 @@ $poruke=array();
 				url: "../predlozak/obrisisalistica.php",
 				data: "id=" + ponuda,
 				success: function(vratioServer){
+					if(vratioServer=="OK"){
 						element.parent().parent().remove();
-						$("#uk").text( vratioServer );
+					}else{
+						alert(vratioServer);
+					}
 					}
 					
 				});

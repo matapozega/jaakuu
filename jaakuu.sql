@@ -16,8 +16,7 @@ ulica varchar(50) not null,
 mjesto varchar(50) not null,
 drzava varchar(50) not null,
 postanskibr varchar(10) not null,
-aktivan boolean not null,
-slika varchar(255) null
+aktivan boolean not null
 ) engine=InnoDB;
 
 create table listic (

@@ -1,6 +1,6 @@
 <?php
 include_once '../konfig.php';
-if(!isset($_SESSION[$sid . "autoriziran"])){
+if(!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]===0){
 	header("location: ../logout.php");
 	exit;
 }
@@ -37,5 +37,6 @@ if ($provjera>=1){
 	values (:sifra,:id,:koef)");
 	$izraz->execute(array("sifra"=>$listic->sifra,"id"=>$_POST["id"],"koef"=>$_POST["koef"]));
 	echo "OK";
+	echo $novikoef;
 		
 	
