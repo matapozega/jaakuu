@@ -5,29 +5,14 @@ if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->
 }
 include_once '../predlozak/inputpolja.php';
 
-if (isset($_POST["uplati"])){
-	
-		
-		
-		//radi update
-		unset($_POST["uplati"]);
-		//$izraz=$veza->prepare("update listic set status=1, uplata=:uplata, ukupnikoeficijent=:ukupnikoef  where korisnik=:korisnik and sifra=:listic");
-		$izraz->bindParam("korisnik",$_SESSION[$sid . "autoriziran"]->sifra);
-		$izraz->bindParam("ukupnikoef",$_POST["ukupnikoef"]);
-		$izraz->bindParam("uplata",$_POST["uplata"]);
-		$izraz->bindParam("listic",$_POST["listic"]);
-		$izraz->execute();
-		header("location: index.php");
-		//print_r($_POST);
-		}
-	
-
 $uvjet="";
 		if(isset($_GET["uvjet"])){
 			$uvjet="%" . $_GET["uvjet"] . "%";
 		}else{
 			$uvjet="%";
 		}
+	
+	
 		
 $poruke=array();
 	$poStranici=3;
@@ -54,7 +39,6 @@ $poruke=array();
 	
 	
 	$odKuda = $stranica*$poStranici-$poStranici;
-	
 		
 
 		
@@ -114,7 +98,7 @@ $poruke=array();
 				</div>
 				
 				<div class="large-2 columns expanded callout" style="margin-top: 40px;">
-					<form method="post" action="<?php $_SERVER["PHP_SELF"];?>" accept-charset="utf-8"">
+					<form method="post" action="<?php echo $putanjaAPP ?>predlozak/potvrdiuplatu.php" accept-charset="utf-8"">
 					 
 					<ol id="ponude">
 						
@@ -151,18 +135,11 @@ $poruke=array();
 					</div>
 					<div class="row">
 						<div class="large-6 columns">
-							 <h3>ev.dobitak:</h3>
-					 	</div>
-						<div class="large-6 columns">
-							 <?php inputPolje("number", "evdobitak","", $poruke); ?>
-					 	</div>
-					</div>
-					<div class="row">
-						<div class="large-6 columns">
 							 <h3>Uplata:</h3>
 					 	</div>
 						<div class="large-6 columns">
-							 <?php inputPolje("number", "uplata","", $poruke); ?>
+							  <input type="number" id="uplata" min="0" step="0.01" name="uplata" \>
+							  
 					 	</div>
 					</div>
 					<div class="row expanded">
@@ -200,7 +177,8 @@ $poruke=array();
 		<?php
 		include_once '../predlozak/skripte.php';
 		?>
-		<script>		
+		<script>	
+				
 			$(".k1").click(function(){
 				var id=$(this).attr("id").split("_")[1];
 				var koef=$(this).attr("id").split("_")[2];
@@ -261,6 +239,7 @@ $poruke=array();
 		}
 		
 		definirajBrisanje();
+
 		</script>
 	</body>
 </html>

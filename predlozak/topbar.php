@@ -8,7 +8,7 @@
     <div id="responsive-menu">
 	<div class="top-bar-left">
 		<ul class="menu">
-			<li>
+			<li class="<?php if($_SERVER["PHP_SELF"] == $putanjaAPP . 'privatno/index.php' || $_SERVER["PHP_SELF"] == $putanjaAPP . 'index.php'){echo 'active'; }else { echo ''; } ?>">
 				<?php if(isset($_SESSION[$sid . "autoriziran"])):
 				?>
 				<a href="<?php echo $putanjaAPP; ?>privatno/index.php">Početna</a>
@@ -16,10 +16,10 @@
 			<?php else: ?>
 			<a href="<?php echo $putanjaAPP; ?>index.php">Početna</a></li>
 			<?php endif; ?>
-			<li>
+			<li class="<?php if($_SERVER["PHP_SELF"] == $putanjaAPP . 'about.php'){echo 'active'; }else { echo ''; } ?>">
 				<a href="<?php echo $putanjaAPP; ?>about.php">O nama</a>
 			</li>
-			<li>
+			<li class="<?php if($_SERVER["PHP_SELF"] == $putanjaAPP . 'contact.php'){echo 'active'; }else { echo ''; } ?>">
 				<a href="<?php echo $putanjaAPP; ?>contact.php">Contact</a>
 			</li>
 		</ul>
@@ -38,7 +38,7 @@
 					</form>
 				</li>
 				<?php endif; ?>
-			<li>
+			<li class="<?php if($_SERVER["PHP_SELF"] == $putanjaAPP . 'privatno/profil.php'){echo 'active'; }else { echo ''; } ?>">
 				<a href="<?php echo $putanjaAPP; ?>privatno/profil.php?sifra=<?php echo $_SESSION[$sid . "autoriziran"]->sifra; ?>">
 				<img src="<?php echo $putanjaAPP; ?>img/<?php
 					if (file_exists($putanjaIMG . $_SESSION[$sid . "autoriziran"] -> oib . ".jpg")) {
@@ -50,27 +50,27 @@
 				<?php echo $_SESSION[$sid . "autoriziran"]->ime ?></a>
 				
 			</li>
-			<li>
+			<li class="<?php if($_SERVER["PHP_SELF"] == $putanjaAPP . 'privatno/dodaj/tip/index.php' || $_SERVER["PHP_SELF"] == $putanjaAPP . 'privatno/dodaj/video/index.php' || $_SERVER["PHP_SELF"] == $putanjaAPP . 'privatno/dodaj/ponuda/index.php'){echo 'active'; }else { echo ''; } ?>">
 				<a href="#">Unos</a>
 				<ul class="menu vertical">
-					<li>
+					<li class="<?php if($_SERVER["PHP_SELF"] == $putanjaAPP . 'privatno/dodaj/tip/index.php'){echo 'active'; }else { echo ''; } ?>">
 						<a href="<?php echo $putanjaAPP; ?>privatno/dodaj/tip/index.php">Tip ponude</a>
 					</li>
-					<li>
+					<li class="<?php if($_SERVER["PHP_SELF"] == $putanjaAPP . 'privatno/dodaj/video/index.php'){echo 'active'; }else { echo ''; } ?>">
 						<a href="<?php echo $putanjaAPP; ?>privatno/dodaj/video/index.php">Video</a>
 					</li>
-					<li>
+					<li class="<?php if($_SERVER["PHP_SELF"] == $putanjaAPP . 'privatno/dodaj/ponuda/index.php'){echo 'active'; }else { echo ''; } ?>">
 						<a href="<?php echo $putanjaAPP; ?>privatno/dodaj/ponuda/index.php">Ponuda</a>
 					</li>
 				</ul>
 			</li>
-			<li>
+			<li class="<?php if($_SERVER["PHP_SELF"] == $putanjaAPP . 'privatno/dashboard.php'){echo 'active'; }else { echo ''; } ?>">
 				<a href="<?php echo $putanjaAPP; ?>privatno/dashboard.php">Kontrolna ploča</a>
 			</li>
-			<li>
+			<li class="<?php if($_SERVER["PHP_SELF"] == $putanjaAPP . 'privatno/statistika.php'){echo 'active'; }else { echo ''; } ?>">
 				<a href="<?php echo $putanjaAPP; ?>privatno/statistika.php">Statistika</a>
 			</li>
-			<li>
+			<li class="<?php if($_SERVER["PHP_SELF"] == $putanjaAPP . 'privatno/era.php'){echo 'active'; }else { echo ''; } ?>">
 				<a href="<?php echo $putanjaAPP; ?>privatno/era.php">ERA</a>
 			</li>
 				<?php endif; ?>

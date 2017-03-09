@@ -37,6 +37,5 @@ if ($provjera>=1){
 	values (:sifra,:id,:koef)");
 	$izraz->execute(array("sifra"=>$listic->sifra,"id"=>$_POST["id"],"koef"=>$_POST["koef"]));
 	echo "OK";
-	echo $novikoef;
-		
+
 	

@@ -6,11 +6,11 @@ if(!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]===
 }
 
 
-/*if (!isset($_POST["id"]) && !isset($_POST["koef"])){ 
+if (!isset($_POST["id"]) && !isset($_POST["koef"])){ 
 	header("location: ../logout.php");
 	exit;
 }
-*/
+
 
 	$izraz = $veza -> prepare("select sifra from listic where korisnik=:korisnik and status=0;");
 	$izraz->execute(array("korisnik" => $_SESSION[$sid . "autoriziran"]->sifra));
