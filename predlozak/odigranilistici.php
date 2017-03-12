@@ -3,7 +3,7 @@
 		<?php echo $stavka->sifra; ?>
 	</td>
 	<td>
-		<?php echo $stavka->uplata; ?>
+		<?php echo $stavka->uplata; ?> Jaakuu
 	</td>
 	<td>
 		<?php echo $stavka->ukupnikoeficijent; ?>
@@ -20,13 +20,18 @@
 							$izraz->execute(array("korisnik"=>$_SESSION[$sid . "autoriziran"]->sifra, "sifra"=>$stavka->sifra));
 							$niz=$izraz->fetchALL(PDO::FETCH_OBJ);
 							
-				foreach ($niz as $stavka): 	?>
+				foreach ($niz as $stavka1): 	?>
 				
-					<li><?php echo $stavka->ime; ?>, <?php echo $stavka->tip; ?>, <?php echo $stavka->vm; ?>, <?php echo $stavka->koef; ?></li>
+					<li><?php echo $stavka1->ime; ?>, <?php echo $stavka1->tip; ?>, <?php echo $stavka1->vm; ?>, <?php echo $stavka1->koef; ?></li>
 				
 				<?php
 				endforeach;
 	 	?> 
 	 	</ol>
+	</td>
+	<td>
+		<?php 
+			echo number_format((float)$stavka->evdobitak, 2, '.', ''); 
+		 ?> Jaakuu
 	</td>
 </tr>

@@ -1,8 +1,10 @@
 <?php
 include_once '../konfig.php';
-if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->aktivan==0) {
+if (!isset($_SESSION[$sid . "autoriziran"])) {
 	header("location: ../logout.php");
+	exit;
 }
+
  ?>
 <!doctype html>
 <html class="no-js" lang="en" dir="ltr">

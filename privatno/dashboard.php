@@ -1,8 +1,12 @@
 <?php
 include_once '../konfig.php';
-if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->aktivan==0) {
-	header("location: ../logout.php");
+include_once $putanjaIMG . "../uloge.php";
+if (!isset($_SESSION[$sid . "autoriziran"]) || isAdmin()===false) {
+	header("location: ../../../logout.php");
+	exit;
 }
+
+
  ?>
 <!doctype html>
 <html class="no-js" lang="en" dir="ltr">
@@ -39,7 +43,7 @@ if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->
                 type: 'pie'
             },
             title: {
-                text: '5 najigranijih tipova ponude'
+                text: '3 najigranija tipa ponude'
             },
              tooltip: {
                 pointFormat: '<b>{point.percentage:.1f}%</b>'
@@ -59,19 +63,15 @@ if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->
                 data: [
                 
                 <?php
-							$izraz=$veza->prepare("select g.naziv as naziv, count(e.tipponude) as tip
-													from korisnik a inner join listic b on a.sifra=b.korisnik
-													inner join listic_ponuda d on b.sifra=d.listic
-													inner join ponuda e on e.sifra=d.ponuda
-													inner join video f on f.sifra=e.video
-													inner join tipponude g on g.sifra=e.tipponude
-													group by e.sifra
-													order by tip desc limit 5
+							$izraz=$veza->prepare("select count(a.listic) as broj ,c.naziv from listic_ponuda a inner join
+													ponuda b on a.ponuda=b.sifra inner join tipponude c on c.sifra=b.tipponude
+													group by c.naziv
+													order by broj desc limit 3
 							");
 							$izraz->execute();
 							$niz=$izraz->fetchALL(PDO::FETCH_OBJ);
 							foreach ($niz as $red) {
-								echo "{name: '" . $red->naziv . "',y: " . $red-> tip . "}, ";
+								echo "{name: '". $red->naziv  . "',y: " . $red-> broj . "}, ";
 							}
 				
 				 ?>

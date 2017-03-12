@@ -1,7 +1,12 @@
 <?php
 include_once '../konfig.php';
-if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->aktivan==0) {
+if (!isset($_SESSION[$sid . "autoriziran"])) {
 	header("location: ../logout.php");
+	exit;
+}
+if ($_SESSION[$sid . "autoriziran"]->aktivan === 0){
+	header("location: " . $putanjaAPP . "aktivacija.php");
+	exit;
 }
 include_once '../predlozak/inputpolja.php';
 
@@ -98,7 +103,7 @@ $poruke=array();
 				</div>
 				
 				<div class="large-2 columns expanded callout" style="margin-top: 40px;">
-					<form method="post" action="<?php echo $putanjaAPP ?>predlozak/potvrdiuplatu.php" accept-charset="utf-8"">
+					<form method="post" id="ref" action="<?php echo $putanjaAPP ?>predlozak/potvrdiuplatu.php" accept-charset="utf-8"">
 					 
 					<ol id="ponude">
 						
@@ -188,7 +193,7 @@ $poruke=array();
 				$.ajax({
 				type: "POST",
 				url: "../predlozak/dodajnalistic.php",
-				data: "id=" + id + "&koef=" + koef,
+				data: "id=" + id + "&koef=" + koef + "&vid=" + vid,
 				success: function(vratioServer){
 					if(vratioServer==="OK"){
 						$("#ponude").append("<li>" + $("#t_" + vid).html() + " | " + $("#n_" + id).html() + " | " + $("#st_" + id).text() + " | " + "<a href=\"#\" ><span class=\"obrisi fi-x-circle\" id=\"p_" + id + "\"></span></a></li>");
@@ -239,7 +244,9 @@ $poruke=array();
 		}
 		
 		definirajBrisanje();
+		
 
 		</script>
+
 	</body>
 </html>

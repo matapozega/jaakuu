@@ -55,6 +55,8 @@ p {
   margin-bottom: 0;
 }
 
+/* footer */
+
 .footer {
   background-color: #292c2f;
   text-align: center;
@@ -217,4 +219,20 @@ span.prefix, label.prefix {
 .pagination a {
   border-radius: 50%; }
  
+ /* Nema skrolera na input number */
+ 
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
+/* menu hover */
+#responsive-menu div ul li a:hover{
+	background-color: #1779ba;
+	color: #fefefe;
+}

@@ -1,10 +1,12 @@
 <?php
-include_once '../../../konfig.php';
+include_once '../../konfig.php';
 include_once $putanjaIMG . "../uloge.php";
 if (!isset($_SESSION[$sid . "autoriziran"]) || isAdmin()===false) {
-	header("location: ../../../logout.php");
+	header("location: ../../logout.php");
 	exit;
 }
+
+
 
 
 $uvjet = "";
@@ -17,13 +19,12 @@ $uvjet = "";
 		$poStranici=8;
 			
 			$izraz = $veza -> prepare("
-				select count(a.sifra) from video a inner join ponuda b on a.sifra=b.video
-				inner join tipponude c on c.sifra=b.tipponude
-				where concat(a.videoid,b.trajeod, b.trajedo, b.koeficijent, c.naziv) like :uvjet
+				select count(sifra) from korisnik where concat(ime,prezime,uloga,oib,email)
+				 like :uvjet
 			");
 			$izraz -> execute(array("uvjet" => $uvjet));
 			$ukupno = $izraz->fetchColumn();
-			
+	
 			$ukupnoStranica=ceil($ukupno/$poStranici);
 			
 			
@@ -50,30 +51,25 @@ $uvjet = "";
 <html class="no-js" lang="en" dir="ltr">
 	<head>
 		<?php
-		include_once '../../../predlozak/head.php';
+		include_once '../../predlozak/head.php';
 		?>
 	</head>
 	<body>
 		<?php
-		include_once '../../../predlozak/topbar.php';
+		include_once '../../predlozak/topbar.php';
 		?>
-			<div class="row expanded">
-						<a class="button expanded" href="unosponuda.php"> Dodaj novu ponudu</a>
-			</div>
 			<table class="hover">
 			<thead>
 				<tr>
-					<td>Video</td>
-					<td>Tip ponude</td>
-					<td>Ponuda traje od:</td>
-					<td>Ponuda traje do:</td>
-					<td>Vrijednost</td>
-					<td>Količina</td>
-					<td>Koeficijent</td>
+					<td>Ime i prezime</td>
+					<td>E-mail</td>
+					<td>Lozinka</td>
+					<td>OIB</td>
+					<td>Uloga</td>
 					<td colspan="2">
 						<div class="row columns expanded">
 							<form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="GET">
-								<input style="margin-bottom: 0px;" value="<?php echo str_replace("%","", $uvjet); ?>" type="text" name="uvjet" placeholder="ID videa" />
+								<input style="margin-bottom: 0px;" value="<?php echo str_replace("%","", $uvjet); ?>" type="text" name="uvjet" placeholder="Search" />
 							</form>
 						</div>
 					</td>
@@ -82,17 +78,22 @@ $uvjet = "";
 			<tbody>
 				<?php 
 				
-				$izraz = $veza->prepare("
-				select a.videoid, a.naziv as video, b.naziv as vrijednost, b.sifra, b.trajeod, b.trajedo, b.koeficijent,b.kolicina, c.naziv
-				from video a inner join ponuda b on a.sifra=b.video
-				inner join tipponude c on c.sifra=b.tipponude
-				where concat(a.videoid,b.trajeod, b.trajedo, b.koeficijent, c.naziv) like :uvjet limit :odKuda,:poStranici
-				");
+				$izraz = $veza->prepare("select concat(ime, ' ' , prezime) as korisnik ,oib,sifra,uloga,email,lozinka from korisnik 
+				where concat(ime,prezime,uloga,oib,email) like :uvjet limit :odKuda,:poStranici;");
 				$izraz->execute(array("uvjet" => $uvjet, "odKuda"=>$odKuda,"poStranici"=>$poStranici));
 				$niz = $izraz->fetchALL(PDO::FETCH_OBJ);
-				foreach ($niz as $red) {
-					include '../../../predlozak/stavkaponuda.php';
-				}
+				foreach ($niz as $red) :?>
+					<tr>
+						<td><?php echo $red->korisnik; ?></td>
+						<td style="max-width: 400px;"><?php echo $red->email; ?></td>
+						<td><?php echo $red->lozinka; ?></td>
+						<td><?php echo $red->oib; ?></td>
+						<td><?php echo $red->uloga; ?></td>
+						<td style="width: 150px;"><a style="margin-bottom: 0px;" title="Dodaj admina" class="button expanded" href="dodajadmina.php?sifra=<?php echo $red -> sifra; ?>"><i class="fi-star"></i> </a></td>
+						<td style="width: 150px;"><a style="margin-bottom: 0px;" class="alert button expanded" title="Ukloni admina" href="ukloniadmina.php?sifra=<?php echo $red -> sifra ?>"><i class="fi-x"></i> </td>
+					</tr>
+				<?php
+				endforeach;
 				 ?>
 			</tbody>
 		</table>
@@ -118,10 +119,10 @@ $uvjet = "";
 					  </div>
 		
 		<?php
-		include_once '../../../predlozak/footer.php';
+		include_once '../../predlozak/footer.php';
 		?>	
 		<?php
-		include_once '../../../predlozak/skripte.php';
+		include_once '../../predlozak/skripte.php';
 		?>
 	</body>
 </html>

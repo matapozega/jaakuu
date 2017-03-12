@@ -1,7 +1,9 @@
 <?php
 include_once '../../../konfig.php';
-if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->aktivan==0) {
+include_once $putanjaIMG . "../uloge.php";
+if (!isset($_SESSION[$sid . "autoriziran"]) || isAdmin()===false) {
 	header("location: ../../../logout.php");
+	exit;
 }
 include_once '../../../predlozak/inputpolja.php';
 $poruke = array();
@@ -27,8 +29,8 @@ if(isset($_POST["dodaj"])){
 		unset($_POST["dodaj"]);
 		$izraz = $veza -> prepare("insert into ponuda 
 		(video,tipponude,trajeod,trajedo,koeficijent,
-		naziv) values 
-		(:video,:tipponude,:trajeod,:trajedo,:koeficijent,:naziv)");
+		naziv,kolicina) values 
+		(:video,:tipponude,:trajeod,:trajedo,:koeficijent,'Više',:kolicina)");
 		$izraz->bindParam("video",$_POST["video"]);
 		$izraz->bindParam("tipponude",$_POST["tipponude"]);
 		
@@ -44,8 +46,32 @@ if(isset($_POST["dodaj"])){
 			$izraz->bindParam("trajedo",$d1->format("Y-m-d"));
 		}
 		
-		$izraz->bindParam("naziv",$_POST["naziv"]);
-		$izraz->bindParam("koeficijent",$_POST["koeficijent"]);
+		$izraz->bindParam("koeficijent",$_POST["koeficijent1"]);
+		$izraz->bindParam("kolicina",$_POST["kolicina"]);
+		
+		$izraz->execute();
+		
+		$izraz = $veza -> prepare("insert into ponuda 
+		(video,tipponude,trajeod,trajedo,koeficijent,
+		naziv,kolicina) values 
+		(:video,:tipponude,:trajeod,:trajedo,:koeficijent,'Manje',:kolicina)");
+		$izraz->bindParam("video",$_POST["video"]);
+		$izraz->bindParam("tipponude",$_POST["tipponude"]);
+		
+		if($_POST["trajeod"]==""){
+			$izraz->bindValue("trajeod",$t=null,PDO::PARAM_NULL);
+		}else{
+			$izraz->bindParam("trajeod",$d->format("Y-m-d"));
+		}
+		
+		if($_POST["trajedo"]==""){
+			$izraz->bindValue("trajedo",$t=null,PDO::PARAM_NULL);
+		}else{
+			$izraz->bindParam("trajedo",$d1->format("Y-m-d"));
+		}
+		
+		$izraz->bindParam("koeficijent",$_POST["koeficijent2"]);
+		$izraz->bindParam("kolicina",$_POST["kolicina"]);
 		
 		$izraz->execute();
 
@@ -78,11 +104,11 @@ if(isset($_POST["dodaj"])){
 							<option disabled>──────────</option>
 							<?php
 
-							$izraz1 = $veza -> prepare("select sifra, videoid from video;");
+							$izraz1 = $veza -> prepare("select sifra, videoid, naziv from video;");
 							$izraz1 -> execute();
 							$video = $izraz1 -> fetchALL(PDO::FETCH_OBJ);
 							foreach ($video as $stavka) {
-								echo '<option   value="' . $stavka -> sifra . '">' . $stavka -> videoid . '</option>';
+								echo '<option   value="' . $stavka -> sifra . '">' . $stavka -> videoid . ' || ' . $stavka->naziv . '</option>';
 							}
 							?>
 							
@@ -112,8 +138,9 @@ if(isset($_POST["dodaj"])){
 
 							inputPolje("text", "trajeod", "Ponuda traje od:", $poruke);
 							inputPolje("text", "trajedo", "Ponuda traje do:", $poruke);
-							inputPolje("text", "naziv", "Vrijednost", $poruke);
-							inputPolje("text", "koeficijent", "Koeficijent", $poruke);
+							inputPolje("text", "koeficijent1", "Koeficijent za više", $poruke);
+							inputPolje("text", "koeficijent2", "Koeficijent za manje", $poruke);
+							inputPolje("text", "kolicina", "Količina", $poruke);
 					?>
 				</fieldset>
 

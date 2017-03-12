@@ -1,6 +1,7 @@
 <?php
 include_once '../../../konfig.php';
-if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->aktivan==0) {
+include_once $putanjaIMG . "../uloge.php";
+if (!isset($_SESSION[$sid . "autoriziran"]) || isAdmin()===false) {
 	header("location: ../../../logout.php");
 	exit;
 }
@@ -117,10 +118,11 @@ if(isset($_POST["promjeni"])){
 
 					<label>Odabir Videa
 						<select name="video">
-
+							<option disabled>Odaberite video</option>
+							<option disabled>──────────</option>
 							<?php
 
-							$izraz1 = $veza -> prepare("select sifra, videoid from video;");
+							$izraz1 = $veza -> prepare("select sifra, videoid, naziv from video;");
 							$izraz1 -> execute();
 							$video = $izraz1 -> fetchALL(PDO::FETCH_OBJ);
 							foreach ($video as $stavka) :?>
@@ -128,7 +130,7 @@ if(isset($_POST["promjeni"])){
 								if (isset($_POST["video"]) && $_POST["video"]==$stavka->sifra) {
 									echo " selected=\"selected\" ";
 								}	
-								echo ' value="' . $stavka -> sifra . '">' . $stavka -> videoid . '</option>';
+								echo ' value="' . $stavka -> sifra . '">' . $stavka -> videoid .  ' || ' . $stavka->naziv . '</option>';
 							endforeach;
 							?>
 						</select>

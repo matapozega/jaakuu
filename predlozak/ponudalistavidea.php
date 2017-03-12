@@ -20,10 +20,12 @@
 		<table class="hover">
 			<thead>
 				<td>Ponuda tipa:</td>
+				<td>Ponuda traje:</td>
 				<td colspan="2">Koeficijent:</td>
 			</thead>
 			<?php
-			$izraz1 = $veza -> prepare("select a.sifra,a.koeficijent,a.naziv,b.naziv as tip,b.sifra as sifratip from ponuda a inner join tipponude b on a.tipponude=b.sifra where video=:videoid");
+			$izraz1 = $veza -> prepare("select a.sifra,a.koeficijent,a.naziv,a.kolicina,a.trajeod,a.trajedo,b.naziv as tip,b.sifra as sifratip from ponuda a 
+										inner join tipponude b on a.tipponude=b.sifra where video=:videoid");
 			$izraz1 -> execute(array("videoid" => $stavka -> sifra));
 			$niz = $izraz1 -> fetchAll(PDO::FETCH_OBJ);
 			foreach ($niz as $red) {

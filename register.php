@@ -18,8 +18,8 @@ if(isset($_POST["register"])){
 		unset($_POST["register"]);
 		unset($_POST["potvrdi_lozinku"]);
 		$izraz=$veza->prepare("insert into korisnik 
-		(ime,prezime,oib,datrodenja,ulica,mjesto,drzava,postanskibr,email,lozinka,aktivan) values 
-		(:ime,:prezime,:oib,:datrodenja,:ulica,:mjesto,:drzava,:postanskibr,:email,md5(:lozinka),:aktivan)");
+		(ime,prezime,oib,datrodenja,ulica,mjesto,drzava,postanskibr,email,lozinka,aktivan,uloga) values 
+		(:ime,:prezime,:oib,:datrodenja,:ulica,:mjesto,:drzava,:postanskibr,:email,md5(:lozinka),:aktivan,'')");
 		$izraz->bindParam("ime",$_POST["ime"]);
 		$izraz->bindParam("prezime",$_POST["prezime"]);
 		$izraz->bindParam("oib",$_POST["oib"]);
@@ -36,6 +36,12 @@ if(isset($_POST["register"])){
 		$izraz->bindParam("lozinka",$_POST["lozinka"]);
 		$izraz->bindParam("aktivan",$_POST["aktivan"]);	
 		$izraz->execute();
+		$zadnjikorisnik = $veza->lastInsertId();
+		
+		$izraz=$veza->prepare("insert into novcanik (korisnik,stanje,valuta) values
+		(:korisnik,100,'Jaakuu');");
+		$izraz->execute(array("korisnik" => $zadnjikorisnik));
+		
 		header("location: index.php");
 	}
 }
@@ -142,7 +148,7 @@ if(isset($_POST["register"])){
 					changeMonth : true,
 					changeYear : true,
 					showButtonPanel : true,
-					yearRange : '1940:2020'
+					yearRange : '1900:1999'
 				};
       	$.datepicker.setDefaults($.datepicker.regional['hr']);
       	

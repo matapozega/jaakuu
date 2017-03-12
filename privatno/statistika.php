@@ -1,8 +1,12 @@
 <?php
 include_once '../konfig.php';
-if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->aktivan==0) {
-	header("location: ../logout.php");
+include_once $putanjaIMG . "../uloge.php";
+if (!isset($_SESSION[$sid . "autoriziran"]) || isAdmin()===false) {
+	header("location: ../../../logout.php");
+	exit;
 }
+
+
  ?>
 <!doctype html>
 <html class="no-js" lang="en" dir="ltr">
@@ -18,7 +22,7 @@ if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->
 		<div class="row">
 			<div class="large-6 columns">
 				<div style="text-align: center; background-color:rgba(0, 0, 0, 0.180392); " class="callout secondary">
-						<h3>10 igrača dobitnih listića sa najviše odigranih ponuda</h3>
+						<h3>10 listića sa najviše odigranih ponuda</h3>
 					</div>
 				<table class="hover">
 					<thead>
@@ -29,20 +33,21 @@ if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->
 					</thead>
 					<tbody>
 						<?php
-						$izraz = $veza -> prepare("select concat(a.ime, ' ', a.prezime) as korisnik, c.listic , count(d.tipponude)
-						as tip, b.status
-						from korisnik a inner join listic b on a.sifra=b.korisnik
-						inner join listic_ponuda c on b.sifra=c.listic
-						inner join ponuda d on c.ponuda=d.sifra
-						inner join tipponude e on e.sifra=d.tipponude
-						where b.status=1 group by korisnik, c.listic
-						order by tip  desc limit 10
+						$izraz = $veza -> prepare("select count(a.ponuda) as tip, concat(c.ime,' ',c.prezime) as korisnik from
+													listic_ponuda a inner join listic b on a.listic=b.sifra
+													inner join korisnik c on b.korisnik=c.sifra
+													group by a.listic
+													order by count(a.ponuda) desc limit 10
 						");
 						$izraz -> execute();
 						$niz = $izraz -> fetchALL(PDO::FETCH_OBJ);
-						foreach ($niz as $stats) {
-							include '../predlozak/listaigraca.php';
-						}
+						foreach ($niz as $stats) :?>
+					    <tr>
+					      <td><?php echo $stats->korisnik; ?></td>
+					      <td><?php echo $stats->tip; ?></td>
+					    </tr>
+					    <?php
+						endforeach;
 						?>
 					</tbody>
 				</table>
@@ -62,19 +67,20 @@ if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->
 					 <tbody>
 
 					<?php
-					$izraz = $veza -> prepare("select concat(a.ime, ' ', a.prezime) as korisnik, count(b.sifra) as listica
-												from korisnik a inner join listic b on a.sifra=b.korisnik 
-												inner join listic_ponuda c on b.sifra=c.listic
-												inner join ponuda d on c.ponuda=d.sifra
-												inner join tipponude e on e.sifra=d.tipponude
+					$izraz = $veza -> prepare("select count( distinct a.listic) as broj, concat(c.ime, ' ', c.prezime) as korisnik from
+												listic_ponuda a inner join listic b on a.listic=b.sifra
+												inner join korisnik c on b.korisnik=c.sifra
 												group by korisnik
-												order by listica desc limit 10
 					");
 					$izraz -> execute();
 					$niz = $izraz -> fetchALL(PDO::FETCH_OBJ);
-					foreach ($niz as $stats) {
-						include '../predlozak/listaigraca1.php';
-					}
+					foreach ($niz as $stats):?>
+					    <tr>
+					      <td><?php echo $stats->korisnik; ?></td>
+					      <td><?php echo $stats->broj; ?></td>
+					    </tr>
+					<?php
+					endforeach;
 					?>
 					</tbody>
 				</table>

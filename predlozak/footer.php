@@ -12,7 +12,7 @@
         	<?php endif; ?>
         <a href="<?php echo $putanjaAPP; ?>about.php">O nama</a>
         <a href="<?php echo $putanjaAPP; ?>contact.php">Kontakt</a>
-        <?php if(isset($_SESSION[$sid . "autoriziran"])):
+        <?php if(isset($_SESSION[$sid . "autoriziran"]) && isAdmin()): 
 				?>
         <a href="<?php echo $putanjaAPP; ?>privatno/dashboard.php">Kontrolna ploča</a>
         <a href="<?php echo $putanjaAPP; ?>privatno/statistika.php">Statistika</a>

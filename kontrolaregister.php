@@ -24,10 +24,19 @@ include_once 'funkcije.php';
 	if(!provjeriOIB($_POST["oib"])){
 		$poruke["oib"]="OIB neispravan";
 	}
+	
+	$izraz=$veza->prepare("select count(oib) from korisnik where oib=:oib");
+	$izraz->execute(array("oib" => $_POST["oib"]));
+	$provjeraoib=$izraz -> fetchColumn();
+	if ($provjeraoib>0){
+		$poruke["oib"]="* OIB neispravan";
+	}
+	
 	$_POST["datrodenja"]=trim($_POST["datrodenja"]);
 	if(strlen($_POST["datrodenja"])==0){
 		$poruke["datrodenja"]="* Datum rođenja obavezno";
-	}
+	}	
+	
 	$_POST["ulica"]=trim($_POST["ulica"]);
 	if(strlen($_POST["ulica"])==0){
 		$poruke["ulica"]="* Ulica obavezno";
@@ -48,6 +57,15 @@ include_once 'funkcije.php';
 	if(strlen($_POST["email"])==0){
 		$poruke["email"]="* E-mail obavezno";
 	}
+	
+	$izraz=$veza->prepare("select count(email) from korisnik where email=:email");
+	$izraz->execute(array("email" => $_POST["email"]));
+	$provjeraemail=$izraz -> fetchColumn();
+	if ($provjeraemail>0){
+		$poruke["email"]="* E-mail se već koristi";
+	}
+	
+	
 	$_POST["lozinka"]=trim($_POST["lozinka"]);
 	if(strlen($_POST["lozinka"])==0){
 		$poruke["lozinka"]="* Lozinka obavezno";

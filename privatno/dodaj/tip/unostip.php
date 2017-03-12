@@ -1,7 +1,9 @@
 <?php
 include_once '../../../konfig.php';
-if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->aktivan==0) {
+include_once $putanjaIMG . "../uloge.php";
+if (!isset($_SESSION[$sid . "autoriziran"]) || isAdmin()===false) {
 	header("location: ../../../logout.php");
+	exit;
 }
 include_once '../../../predlozak/inputpolja.php';
 $poruke=array();

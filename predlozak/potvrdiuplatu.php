@@ -6,11 +6,10 @@ if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->
 }
 
 
-		// JOŠ UBACITI EVENTUALNI DOBITAK!!!! //
 	if (isset($_POST["potvrdi"])){
 		unset($_POST["potvrdi"]);
-		$izraz=$veza->prepare("update listic set status=1, uplata=:uplata, ukupnikoeficijent=:ukkoef  where sifra=:listic");
-		$izraz->execute(array("ukkoef" => $_POST["ukkoef"],"uplata" => $_POST["uplata"], "listic" => $_POST["listic"]));
+		$izraz=$veza->prepare("update listic set status=1, uplata=:uplata, ukupnikoeficijent=:ukkoef, evdobitak=:evdobitak where sifra=:listic");
+		$izraz->execute(array("evdobitak"=>$_POST["evdobitak"], "ukkoef" => $_POST["ukkoef"],"uplata" => $_POST["uplata"], "listic" => $_POST["listic"]));
 		
 		$izraz=$veza->prepare("select stanje from novcanik where korisnik=:korisnik");
 		$izraz->execute(array("korisnik" => $_SESSION[$sid . "autoriziran"]->sifra));
@@ -70,7 +69,7 @@ if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->
 					<td>
 						<?php 
 							$evdobitak = $stavka->ukupnikoeficijent * $uplata;
-							echo number_format((float)$evdobitak, 2, '.', '');
+							echo number_format((float)$evdobitak, 2, '.', ''); 
 						 ?> Jaakuu
 					</td>
 					<td>
@@ -113,6 +112,8 @@ if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->
 		<input type="hidden" name="uplata" value="<?php echo $_POST["uplata"] ?>" />
 		<input type="hidden" name="ukkoef" value="<?php echo $ukkoef ?>" />
 		<input type="hidden" name="listic" value="<?php echo $listic ?>" />
+		<input type="hidden" name="evdobitak" value="<?php echo $evdobitak ?>" />
+		
 		<div class="row columns">
 				<input name="potvrdi" class="button expanded" type="submit" value="Uplati!" />
 					</div>
