@@ -110,7 +110,7 @@ $poruke=array();
 		<?php 	
 		
 		
-				$izraz=$veza->prepare("select a.sifra as listic,c.naziv as vm, c.koeficijent as koef, d.naziv as ime,e.naziv as tip,c.sifra as ponuda,a.ukupnikoeficijent from
+				$izraz=$veza->prepare("select a.sifra as listic,c.naziv as vm,c.kolicina, c.koeficijent as koef, d.naziv as ime,e.naziv as tip,c.sifra as ponuda,a.ukupnikoeficijent from
 				listic a inner join	listic_ponuda b on a.sifra=b.listic
 				inner join ponuda c on b.ponuda=c.sifra
 				inner join video d on c.video=d.sifra
@@ -123,7 +123,7 @@ $poruke=array();
 				foreach ($niz as $stavka):					
 				?>
 				
-				<li><?php echo $stavka->ime; ?> | <?php echo $stavka-> vm; ?>  <?php echo $stavka->tip; ?> | <?php echo $stavka-> koef; ?> | <a href="#" ><span class="obrisi fi-x-circle" id="p_<?php echo $stavka->ponuda; ?>"></span></a></li>
+				<li><?php echo $stavka->ime; ?> | <?php echo $stavka-> vm; ?>  <?php echo $stavka->tip; ?> od <?php echo $stavka->kolicina; ?> | <?php echo $stavka-> koef; ?> | <a href="#" ><span class="obrisi fi-x-circle" id="p_<?php echo $stavka->ponuda; ?>"></span></a></li>
 				<?php
 				endforeach;
 	 			?>
@@ -193,7 +193,7 @@ $poruke=array();
 				$.ajax({
 				type: "POST",
 				url: "../predlozak/dodajnalistic.php",
-				data: "id=" + id + "&koef=" + koef + "&vid=" + vid,
+				data: "tip=" + tip + "&koef=" + koef + "&vid=" + vid + "&id=" + id,
 				success: function(vratioServer){
 					if(vratioServer==="OK"){
 						$("#ponude").append("<li>" + $("#t_" + vid).html() + " | " + $("#n_" + id).html() + " | " + $("#st_" + id).text() + " | " + "<a href=\"#\" ><span class=\"obrisi fi-x-circle\" id=\"p_" + id + "\"></span></a></li>");

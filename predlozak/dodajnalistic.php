@@ -6,7 +6,7 @@ if(!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]===
 }
 
 
-if (!isset($_POST["id"]) && !isset($_POST["koef"]) && !isset($_POST["vid"])){ 
+if (!isset($_POST["tip"]) && !isset($_POST["koef"]) && !isset($_POST["vid"]) && !isset($_POST["id"])){ 
 	header("location: ../logout.php");
 	exit;
 }
@@ -32,9 +32,11 @@ if ($provjeraponude>0){
 	echo "Ta ponuda je već na listiću!";
 	exit;
 }
+
+
 	$izraz = $veza -> prepare("select count(c.tipponude) from listic a inner join listic_ponuda b on a.sifra=b.listic inner join ponuda c on c.sifra=b.ponuda 
-								where a.sifra=:listic and video=:video ");
-	$izraz->execute(array("listic" => $listic->sifra,"video"=>$_POST["vid"]));
+								where c.tipponude=:tip and video=:video and b.listic=:listic ");
+	$izraz->execute(array("tip" => $_POST["tip"],"video"=>$_POST["vid"],"listic"=>$listic->sifra));
 	$provjeratipa=$izraz->fetchColumn();
 if ($provjeratipa>0){
 	echo "Već je odigran taj tip ponude!";

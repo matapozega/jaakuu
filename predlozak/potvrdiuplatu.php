@@ -8,21 +8,30 @@ if (!isset($_SESSION[$sid . "autoriziran"]) || $_SESSION[$sid . "autoriziran"]->
 
 	if (isset($_POST["potvrdi"])){
 		unset($_POST["potvrdi"]);
-		$izraz=$veza->prepare("update listic set status=1, uplata=:uplata, ukupnikoeficijent=:ukkoef, evdobitak=:evdobitak where sifra=:listic");
-		$izraz->execute(array("evdobitak"=>$_POST["evdobitak"], "ukkoef" => $_POST["ukkoef"],"uplata" => $_POST["uplata"], "listic" => $_POST["listic"]));
-		
 		$izraz=$veza->prepare("select stanje from novcanik where korisnik=:korisnik");
 		$izraz->execute(array("korisnik" => $_SESSION[$sid . "autoriziran"]->sifra));
 		$stanje=$izraz->fetchColumn();
 		
 		$novostanje = $stanje - $_POST["uplata"];
+		if($novostanje < 0){
+			echo "<script>
+			alert('Nemate dovoljno jaakuu novcica');
+			window.location.href='../index.php';
+			</script>"; 
+		}else{
 		
 		$izraz=$veza->prepare("update novcanik set stanje=:novostanje where korisnik=:korisnik");
 		$izraz->execute(array("korisnik" => $_SESSION[$sid . "autoriziran"]->sifra, "novostanje"=>$novostanje));
-	
-
+		
+		$izraz=$veza->prepare("update listic set status=1, uplata=:uplata, ukupnikoeficijent=:ukkoef, evdobitak=:evdobitak where sifra=:listic");
+		$izraz->execute(array("evdobitak"=>$_POST["evdobitak"], "ukkoef" => $_POST["ukkoef"],"uplata" => $_POST["uplata"], "listic" => $_POST["listic"]));
 		header("location: ../index.php");
-		}
+		}	
+	}
+
+		
+		
+		
 	
 ?>
 

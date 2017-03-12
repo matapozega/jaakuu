@@ -22,7 +22,7 @@
 							
 				foreach ($niz as $stavka1): 	?>
 				
-					<li><?php echo $stavka1->ime; ?>, <?php echo $stavka1->tip; ?>, <?php echo $stavka1->vm; ?>, <?php echo $stavka1->koef; ?></li>
+					<li><?php echo $stavka1->ime; ?> | <?php echo $stavka1-> vm; ?>  <?php echo $stavka1->tip; ?> od <?php echo $stavka1->kolicina; ?> | <?php echo $stavka1-> koef; ?> </li>
 				
 				<?php
 				endforeach;
